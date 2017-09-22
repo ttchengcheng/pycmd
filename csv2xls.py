@@ -7,6 +7,7 @@ import argparse
 import os
 import sys
 import csv
+import shlex
 import tablib
 import tclib.cmd as tc_cmd
 
@@ -53,6 +54,10 @@ PARSER = argparse.ArgumentParser(
 PARSER.add_argument('file', action="store", type=str,
                     help="input file")
 
+PARSER.add_argument('--o', action="store_true", dest="open",
+                    help="open xls when converting finished")
+
+
 OPTIONS = PARSER.parse_args()
 FULL_PATH = get_full_path(OPTIONS)
 
@@ -63,5 +68,9 @@ if not FULL_PATH:
 XLS_FILE_PATH, ERR_MSG = save_as_xls(FULL_PATH)
 if ERR_MSG:
     CMD.show_error('Saving xls file failed: ' + ERR_MSG)
+    sys.exit(2)
 else:
     CMD.show_output('File {0} is sucessfully saved'.format(XLS_FILE_PATH))
+
+if OPTIONS.open:
+    CMD.exec_sys(['open', shlex.quote(XLS_FILE_PATH)])

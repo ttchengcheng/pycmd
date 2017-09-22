@@ -5,6 +5,7 @@
 
 import os
 import sys
+import shlex
 import tclib.cmd as tc_cmd
 import tclib.shortcuts as tc_shortcut
 from tabulate import tabulate
@@ -101,7 +102,7 @@ def cdx_nav():
         entry_to_go = search_result[0]['path']
 
     try:
-        sys.stdout.write(entry_to_go)
+        sys.stdout.write(shlex.quote(entry_to_go))
     except IOError:
         print("{0}Command does not support pipe, {1}use cmd `cdx shortcut` {0}instead".format(
             CMD.color_error(), CMD.color_cmd()))
