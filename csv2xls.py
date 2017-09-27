@@ -8,6 +8,7 @@ import os
 import sys
 import csv
 import shlex
+import codecs
 import tablib
 import tclib.cmd as tc_cmd
 
@@ -22,11 +23,11 @@ def get_full_path(arg_options):
     return ""
 
 
-def save_as_xls(csv_file_path):
+def save_as_xls(csv_file_path, encoding='utf-8'):
     "Save csv file to xls file"
 
     data = []
-    with open(csv_file_path) as csv_file:
+    with codecs.open(csv_file_path, 'r', encoding) as csv_file:
         csv_reader = csv.reader(csv_file)
         # headers = next(csv_reader)
         for row in csv_reader:
@@ -44,6 +45,7 @@ def save_as_xls(csv_file_path):
 
     return xls_file_path, ""
 
+
 if __name__ == "__main__":
     CMD = tc_cmd.INSTANCE
 
@@ -54,9 +56,11 @@ if __name__ == "__main__":
     PARSER.add_argument('file', action="store", type=str,
                         help="input file")
 
+    PARSER.add_argument('-e', action="store", type=str,
+                        dest='encoding', default='utf-8', help="file encoding")
+
     PARSER.add_argument('--o', action="store_true", dest="open",
                         help="open xls when converting finished")
-
 
     OPTIONS = PARSER.parse_args()
     FULL_PATH = get_full_path(OPTIONS)
@@ -65,7 +69,7 @@ if __name__ == "__main__":
         CMD.show_error("File [{0}] cannot be located.".format(OPTIONS.file))
         sys.exit(2)
 
-    XLS_FILE_PATH, ERR_MSG = save_as_xls(FULL_PATH)
+    XLS_FILE_PATH, ERR_MSG = save_as_xls(FULL_PATH, OPTIONS.encoding)
     if ERR_MSG:
         CMD.show_error('Saving xls file failed: ' + ERR_MSG)
         sys.exit(2)
