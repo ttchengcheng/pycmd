@@ -28,10 +28,16 @@ def save_as_xls(csv_file_path, encoding='utf-8'):
 
     data = []
     with codecs.open(csv_file_path, 'r', encoding) as csv_file:
-        csv_reader = csv.reader(csv_file)
-        # headers = next(csv_reader)
-        for row in csv_reader:
-            data.append(tuple(row))
+
+        try:
+            csv_reader = csv.reader(csv_file)
+            # headers = next(csv_reader)
+            for row in csv_reader:
+                data.append(tuple(row))
+        except UnicodeDecodeError:
+            CMD.show_error(
+                'csv file cannot be decoded properly by encoding [{0}].'.format(encoding))
+            sys.exit(2)
 
     data = tablib.Dataset(*data)
 
