@@ -14,6 +14,7 @@ from tclib import cmd
 CMD = cmd.INSTANCE
 SUPPORTED_TYPES = ['md5', 'sha1', 'sha224', 'sha256', 'sha384', 'sha512']
 
+
 def parse_args():
     "command line arguments"
     parser = argparse.ArgumentParser(
