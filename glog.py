@@ -31,6 +31,6 @@ CMD.show_cmd('(' + EXEC_PATH + ')')
 
 CMD_LINE = CMD.user_dir(
     'Documents/workspace/go/src/github.com/cloudson/gitql/gitql')
-CMD_ARG = 'select date, message from commits'
+CMD_ARG = 'select date, message, author from commits'
 
 CMD.exec_cmd([CMD_LINE, CMD_ARG], path=EXEC_PATH, short=True)
