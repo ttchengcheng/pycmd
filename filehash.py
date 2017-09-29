@@ -9,10 +9,9 @@ import math
 import os
 import sys
 import progressbar
-from tclib import cmd
 
-CMD = cmd.INSTANCE
 SUPPORTED_TYPES = ['md5', 'sha1', 'sha224', 'sha256', 'sha384', 'sha512']
+
 
 def parse_args():
     "command line arguments"
@@ -38,7 +37,7 @@ def create_hash(target_file, hash_type, no_progress):
 
     target_file = os.path.realpath(target_file)
     if not os.path.isfile(target_file):
-        CMD.show_error("{0} is not a valid file".format(target_file))
+        print("{0} is not a valid file".format(target_file))
         sys.exit(2)
 
     hash_func = getattr(hashlib, hash_type)
