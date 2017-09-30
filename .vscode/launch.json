@@ -11,7 +11,7 @@
       "stopOnEntry": false,
       "pythonPath": "${config:python.pythonPath}",
       "program": "${workspaceRoot}/test.py",
-      "cwd": "/Users/hoolai/Downloads/",
+      "cwd": "${home}/Downloads/",
       "env": {},
       "args": [
       ],
