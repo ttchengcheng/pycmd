@@ -4,8 +4,9 @@
 """record ip/hostname/ping of network traffic"""
 
 import socket
-import scapy.all as scapy
-# import sniff, DNS, DNSQR, dnsqtypes
+# pylint: disable=E0611
+from scapy.all import sniff, DNS, DNSQR, dnsqtypes
+# pylint: enable=E0611
 import tclib.cmd
 
 CMD = tclib.cmd.INSTANCE
@@ -34,11 +35,14 @@ def lookup(addr):
 
 def process_dns(packet):
     "parse dns package"
-    dns = packet[scapy.DNS]
+    dns = packet[DNS]
     if dns.qr == 0:
-        query = dns[scapy.DNSQR]
-        CMD.show_cmd(" < {0:56s} | ({1})".format(
-            query.qname.decode('utf-8'), scapy.dnsqtypes.get(query.qtype)))
+        if dns.haslayer("dns"):
+            query = dns[DNSQR]
+            CMD.show_cmd(" < {0:56s} | ({1})".format(
+                query.qname.decode('utf-8'), dnsqtypes.get(query.qtype)))
+        else:
+            CMD.show_error(packet.summary())
 
     rcount = 0
     if dns.qr == 1:
@@ -58,4 +62,4 @@ def process_dns(packet):
 
 
 if __name__ == "__main__":
-    scapy.sniff(filter="udp port 53", prn=process_dns)
+    sniff(filter="udp port 53", prn=process_dns)
