@@ -37,7 +37,7 @@ def process_dns(packet):
     "parse dns package"
     dns = packet[DNS]
     if dns.qr == 0:
-        if dns.haslayer("dns"):
+        if not dns.haslayer("dns"):
             query = dns[DNSQR]
             CMD.show_cmd(" < {0:56s} | ({1})".format(
                 query.qname.decode('utf-8'), dnsqtypes.get(query.qtype)))
