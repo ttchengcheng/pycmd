@@ -78,28 +78,21 @@ class Cmd(object):
         print(output)
 
     @classmethod
-    def exec_cmd(cls, params, path='.', short=False):
+    def exec_cmd(cls, params, path='.'):
         "echo and exec a command line command"
 
         if not params:
             sys.exit(0)
 
-        if short:
-            shorten_params = params[:]
-            exe_path = shorten_params[0]
-            exe_path = os.path.basename(exe_path)
-            shorten_params[0] = exe_path
-            cls.show_cmd('> ' + ' '.join(shorten_params))
-        else:
-            cls.show_cmd('> ' + ' '.join(params))
+        cls.show_cmd('> ' + ' '.join(params))
 
         try:
-            cmd_output = subprocess.check_output(params, cwd=path).decode('utf-8')
+            cmd_output = subprocess.check_output(
+                params, cwd=path).decode('utf-8')
             if cmd_output:
                 print(cmd_output)
         except subprocess.CalledProcessError as exec_except:
             cls.show_error(exec_except.output.decode('utf-8'))
-        return
 
     @classmethod
     def exec_sys(cls, params, path='.'):
@@ -113,7 +106,6 @@ class Cmd(object):
                 print(cmd_output)
         except subprocess.CalledProcessError as exec_except:
             cls.show_error(exec_except.output.decode('utf-8'))
-        return
 
 
 INSTANCE = Cmd()

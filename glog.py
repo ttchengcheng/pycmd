@@ -5,32 +5,37 @@
 
 import sys
 import os
+import subprocess
 import tclib.cmd as tc_cmd
 import tclib.shortcuts as tc_shortcut
 
-EXEC_PATH = '.'
 CMD = tc_cmd.Cmd()
+def glog():
+    "exec git log with shortcut directory"
 
-if len(sys.argv) >= 2:
-    SHORTCUTS = tc_shortcut.Shortcut()
-    SEARCH_RESULT = SHORTCUTS.search(sys.argv[1])
-    if SEARCH_RESULT:
-        EXEC_PATH = SEARCH_RESULT[0]['path']
-    else:
-        CMD.show_error('shortcut [' + sys.argv[1] + "] can't be found")
+    exec_path = '.'
+
+    if len(sys.argv) >= 2:
+        shortcuts = tc_shortcut.Shortcut()
+        search_result = shortcuts.search(sys.argv[1])
+
+        if sys.argv[1] != '.':
+            if search_result:
+                exec_path = search_result[0]['path']
+            else:
+                CMD.show_error('shortcut [' + sys.argv[1] + "] can't be found")
+                sys.exit(2)
+
+    if exec_path == '.':
+        exec_path = os.path.realpath('.')
+
+    if not os.path.isdir(exec_path):
+        CMD.show_error("[{1}]{0} is not a valid path.".format(
+            exec_path, sys.argv[1]))
         sys.exit(2)
 
-if EXEC_PATH == '.':
-    EXEC_PATH = os.path.realpath('.')
+    CMD.show_cmd('(' + exec_path + ')')
 
-if not os.path.isdir(EXEC_PATH):
-    CMD.show_error("[{1}]{0} is not a valid path.".format(EXEC_PATH, sys.argv[1]))
-    sys.exit(2)
+    subprocess.Popen(['git', 'log', '-7'] + sys.argv[2:], cwd=exec_path)
 
-CMD.show_cmd('(' + EXEC_PATH + ')')
-
-CMD_LINE = CMD.user_dir(
-    'Documents/workspace/go/src/github.com/cloudson/gitql/gitql')
-CMD_ARG = 'select date, message, author from commits'
-
-CMD.exec_cmd([CMD_LINE, CMD_ARG], path=EXEC_PATH, short=True)
+glog()
