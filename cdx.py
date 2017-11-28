@@ -82,12 +82,12 @@ def cdx_nav():
         so this can be done with a shell function like this: (defined in sth like .bash_profile)
 
         _cd() {
-            /Users/my/cmds/cdx.py -f cd $1
+            /Users/my/cmds/cdx.py -sc cd $1
             cd `/Users/my/cmds/cdx.py $1`
         }
 
         _x() {
-            /Users/my/cmds/cdx.py -f $1 $2
+            /Users/my/cmds/cdx.py -sc $1 $2
             $1 `/Users/my/cmds/cdx.py $2`
         }
     """
