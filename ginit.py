@@ -29,7 +29,7 @@ if os.path.exists(GIT_DIR) or os.path.exists(GIT_IGNORE):
     if INPUT != 'y':
         sys.exit(1)
     else:
-        if subprocess.call(CMD.user_dir('cmds/gclean.py')):
+        if subprocess.call(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'gclean.py')):
             sys.exit(1)
 
 # 1. > git init
