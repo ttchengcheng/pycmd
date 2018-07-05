@@ -18,7 +18,8 @@ IGNORE_TEMPLATES = {
     'py': 'Python',
     'objc': 'Objective-C',
     'go': 'Go',
-    'node': 'Node'
+    'node': 'Node',
+    'rust': 'Rust'
 }
 
 # 0. check if git alreadly initialized
